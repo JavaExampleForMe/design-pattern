@@ -8,15 +8,18 @@
     <artifactId>design-patterns</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>colorListening</module>
-        <module>different-thread</module>
-        <module>redux</module>
-    </modules>
-
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+    <modules>
+        <module>decorator</module>
+        <module>different-thread</module>
+        <module>redux</module>
+        <module>decorator</module>
+        <module>postman</module>
+        <module>postman.decorator</module>
+    </modules>
+
 
 </project>
