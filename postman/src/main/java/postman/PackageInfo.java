@@ -1,39 +1,28 @@
 package postman;
 
-import lombok.AllArgsConstructor;
+import java.awt.*;
 
 public class PackageInfo {
-    int cityId;
-    String street;
-    int number;
+    Address address;
+    Point addressPoint;
     String name;
 
-    public PackageInfo(int cityId, String street, int number, String name) {
-        this.cityId = cityId;
-        this.street = street;
-        this.number = number;
+    public PackageInfo(Point addressPoint, Address address, String name) {
+        this.address = address;
+        System.out.println(this.toString());
+        this.addressPoint = addressPoint;
         this.name = name;
-    }
-
-    public int getCityId() {
-        return cityId;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public int getNumber() {
-        return number;
     }
 
     @Override
     public String toString() {
         return "PackageInfo{" +
-                "cityId=" + cityId +
-                ", street='" + street + '\'' +
-                ", number=" + number +
+                "Address=" + address +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public Address getAddress() {
+        return address;
     }
 }

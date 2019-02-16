@@ -3,7 +3,7 @@ package postman;
 import java.util.List;
 
 public interface DeliveryTask {
-    int[] getCitiesIds();
+    City[] getCities();
     List<PackageInfo> getAllPackages();
-    String[] getStreet(int cityId);
+    String[] getStreet(City city);
 }

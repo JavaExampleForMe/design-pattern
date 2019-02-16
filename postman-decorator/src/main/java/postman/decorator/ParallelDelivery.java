@@ -1,5 +1,10 @@
 package postman.decorator;
 
+import postman.City;
+import postman.Delivery;
+import postman.DeliveryTask;
+import postman.PackageInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -42,21 +47,21 @@ public class ParallelDelivery implements Delivery {
     private List<DeliveryTask> toBulks(DeliveryTask deliveryTask) {
         List<DeliveryTask> result = new ArrayList<>();
 
-        for (int currCityId : deliveryTask.getCitiesIds()) {
+        for (City currCity : deliveryTask.getCities()) {
             DeliveryTask deliveryPerCityPerStreet = new DeliveryTask() {
                     @Override
-                    public int[] getCitiesIds() {
-                        return new int[]{currCityId};
+                    public City[] getCities() {
+                        return new City[]{currCity};
                     }
 
                     @Override
                     public List<PackageInfo> getAllPackages() {
-                        return deliveryTask.getAllPackages().stream().filter(packageInfo -> packageInfo.cityId==currCityId).collect(Collectors.toList());
+                        return deliveryTask.getAllPackages().stream().filter(packageInfo -> packageInfo.getAddress().getCity()==currCity).collect(Collectors.toList());
                     }
 
                     @Override
-                    public String[] getStreet(int cityId) {
-                        return getStreet(cityId);
+                    public String[] getStreet(City city) {
+                        return getStreet(city);
                     }
                 };
             result.add(deliveryPerCityPerStreet);

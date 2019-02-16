@@ -4,9 +4,15 @@ import org.fluttercode.datafactory.impl.DataFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import postman.*;
+import postman.DeliverService;
 
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static java.lang.Thread.sleep;
 
 public class DeiveryTest {
     private DataFactory dataFactory;
@@ -18,41 +24,55 @@ public class DeiveryTest {
 
     @Test
     public void simpleDelivery() {
-        List<PackageInfo> packages = new ArrayList<>();
-        packages.add(new PackageInfo(1, "City1Street1", 12, dataFactory.getLastName()));
-        packages.add(new PackageInfo(2, "City2Street4", 10, dataFactory.getLastName()));
-        packages.add(new PackageInfo(2, "City2Street4", 5, dataFactory.getLastName()));
-        packages.add(new PackageInfo(1, "City1Street2", 27, dataFactory.getLastName()));
-        packages.add(new PackageInfo(3, "City3Street1", 3, dataFactory.getLastName()));
-        packages.add(new PackageInfo(1, "City1Street3", 9, dataFactory.getLastName()));
-        packages.add(new PackageInfo(1, "City1Street1", 18, dataFactory.getLastName()));
+        postman.decorator.DeliverService deliverService = new postman.decorator.DeliverService(4,10);
+        HashMap<Address, JButton> existingAddresses = deliverService.drawMap();
 
-        Delivery delivery = new DeliveryImpl(); // 335
-        delivery = new SortDelivery(delivery); // 251
-        delivery = new ParallelDelivery(delivery, 4); // 126
+        List<postman.PackageInfo> packages = new ArrayList<>();
+        List<Address> addresses = new ArrayList<>();
+        addresses.add(new Address(City.London, "street1", 3));
+        addresses.add(new Address(City.Paris, "street2", 10));
+        addresses.add(new Address(City.NY, "street3", 6));
+        addresses.add(new Address(City.Paris, "street2", 5));
+        addresses.add(new Address(City.London, "street2", 1));
+        addresses.add(new Address(City.Rome, "street1", 3));
+        addresses.add(new Address(City.London, "street3", 9));
+        addresses.add(new Address(City.London, "street1", 2));
+        for (Address address : addresses) {
+            addAddressToPackage(existingAddresses, packages, address);
+        }
 
-        final int actualDeliver = delivery.deliver(new DeliveryTask() {
+        final int actualDeliver = deliverService.deliver(new DeliveryTask() {
             @Override
-            public int[] getCitiesIds() {
-                return packages.stream().mapToInt(PackageInfo::getCityId).distinct().toArray();
+            public City[] getCities() {
+                return packages.stream().map(postman.PackageInfo::getAddress).map(Address::getCity).distinct().toArray(City[]::new);
             }
 
             @Override
-            public List<PackageInfo> getAllPackages() {
+            public List<postman.PackageInfo> getAllPackages() {
                 return packages;
             }
 
             @Override
-            public String[] getStreet(int cityId) {
+            public String[] getStreet(City city) {
                 return packages.stream()
-                        .filter(packageInfo -> packageInfo.cityId == cityId)
-                        .map(PackageInfo::getStreet)
+                        .filter(packageInfo -> packageInfo.getAddress().getCity() == city)
+                        .map(PackageInfo::getAddress)
+                        .map(Address::getStreet)
                         .distinct()
                         .toArray(String[]::new);
             }
         });
         System.out.println("Total time "  + actualDeliver);
+        try {
+            sleep(30000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Assert.assertEquals(320,actualDeliver);
+    }
+    private void addAddressToPackage(HashMap<Address, JButton> existingAddresses, List<postman.PackageInfo> packages, Address address) {
+        packages.add(new postman.PackageInfo(((JButton) existingAddresses.get(address)).getLocationOnScreen(), address, "Mr. "+ dataFactory.getLastName()));
     }
 
 }
