@@ -1,5 +1,7 @@
 package postman;
 
+import postman.UI.FrameMap;
+
 import java.awt.*;
 
 public class DeliveryImpl implements Delivery {

@@ -1,4 +1,7 @@
-package postman;
+package postman.UI;
+
+import postman.Address;
+import postman.City;
 
 import javax.swing.*;
 import java.awt.*;
