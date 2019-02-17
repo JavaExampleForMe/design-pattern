@@ -23,7 +23,7 @@ public class DeliverService {
         HashMap<Address, JButton> existingAddresses = frameMap.drawMap();
         delivery = new DeliveryImpl(frameMap); // 4273
         delivery = new SortDelivery(delivery); // 3027
-      //  delivery = new ParallelDelivery(delivery, 4); // 1105
+        delivery = new ParallelDelivery(delivery, 4); // 1105
         return existingAddresses;
     }
 
