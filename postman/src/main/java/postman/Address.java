@@ -3,7 +3,6 @@ package postman;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 
-import java.util.Comparator;
 import java.util.Objects;
 
 @Setter
@@ -17,9 +16,6 @@ public class Address implements Comparable<Address> {
         return city;
     }
 
-    public String getStreet() {
-        return street;
-    }
 
     public int getHouse() {
         return house;
