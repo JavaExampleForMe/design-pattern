@@ -1,17 +1,18 @@
 package postman;
 
-import java.awt.*;
+import java.util.UUID;
 
 public class PackageInfo {
     Address address;
-    Point addressPoint;
     String name;
+    private UUID id;
+    String status;
 
-    public PackageInfo(Point addressPoint, Address address, String name) {
+    public PackageInfo(Address address, String name) {
         this.address = address;
         System.out.println(this.toString());
-        this.addressPoint = addressPoint;
         this.name = name;
+        this.status = "New";
     }
 
     @Override
@@ -24,5 +25,18 @@ public class PackageInfo {
 
     public Address getAddress() {
         return address;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setStatus(String status) {
+
+        this.status = status;
     }
 }
