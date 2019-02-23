@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class InMemoryStorage implements PackagesStorage {
+public class ProductionStorage implements PackagesStorage {
     private List<PackageInfo> packagesStorage = new ArrayList<>();
 
     @Override

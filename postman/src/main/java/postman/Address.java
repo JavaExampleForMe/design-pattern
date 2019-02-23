@@ -1,25 +1,18 @@
 package postman;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
+import postman.UI.City;
 
 import java.util.Objects;
 
-@Setter
+@Getter
 @AllArgsConstructor
 public class Address implements Comparable<Address> {
     City city;
     String street;
     int house;
-
-    public City getCity() {
-        return city;
-    }
-
-
-    public int getHouse() {
-        return house;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -48,7 +41,6 @@ public class Address implements Comparable<Address> {
     public String display() {
         return "#" + house + " " + street+ " "+ city;
     }
-
 
     @Override
     public int compareTo(Address obj) {

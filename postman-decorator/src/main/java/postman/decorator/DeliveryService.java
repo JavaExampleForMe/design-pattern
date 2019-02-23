@@ -1,17 +1,18 @@
-package postman;
+package postman.decorator;
+
+import postman.*;
 
 import java.util.function.BiConsumer;
 
-public class DeliveryService implements Observable{
+public class DeliveryService extends postman.DeliveryService {
 
-    protected final PackagesStorage packagesStorage;
-    private PostmanImpl postman;
-    protected DeliveryTask deliveryTask;
+    private Postman postman;
 
     public DeliveryService(PackagesStorage packagesStorage, DeliveryTask deliveryTask) {
-        this.packagesStorage = packagesStorage;
-        postman = new PostmanImpl(this.packagesStorage);
-        this.deliveryTask = deliveryTask;
+        super(packagesStorage, deliveryTask);
+        postman = new PostmanImpl(packagesStorage);
+        postman = new SortPostman(postman); // 3027
+        postman = new ParallelPostman(postman); // 1105
     }
 
     public void startWorkDay(){

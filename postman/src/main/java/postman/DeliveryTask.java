@@ -2,8 +2,6 @@ package postman;
 
 import java.util.List;
 
-public interface DeliveryTask extends List<DeliveryTask> {
-    City[] getCities();
+public interface DeliveryTask {
     List<PackageInfo> getAllPackages();
-    String[] getStreet(City city);
 }

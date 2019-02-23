@@ -1,5 +1,5 @@
 package postman;
 
-public interface Postman {
-    int deliver();
+public interface Postman extends Observable{
+    int deliver(DeliveryTask deliveryTask);
 }

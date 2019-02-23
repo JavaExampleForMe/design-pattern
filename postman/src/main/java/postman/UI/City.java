@@ -1,4 +1,4 @@
-package postman;
+package postman.UI;
 
 import java.awt.*;
 

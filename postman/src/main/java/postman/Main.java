@@ -1,27 +1,33 @@
 package postman;
 
+import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 import org.fluttercode.datafactory.impl.DataFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import postman.UI.City;
+import postman.UI.FrameMap;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class PostmanTest {
+public class Main {
 
-    private DataFactory dataFactory;
+    private static final DataFactory dataFactory = new DataFactory();
 
-    @Before
-    public void setUp()  {
-        dataFactory = new DataFactory();
-    }
+    public static void main(String [ ] args) {
+        Map<City, List<Triple<String, Integer, Integer>>> existingAddresses = new HashMap<City, List<Triple<String, Integer, Integer>>>();
+        for (City city : City.values()) {
+            List<Triple<String, Integer, Integer>> cityStreets = new ArrayList<>();
+            for (int i = 0; i < 4; i++) {
+                Triple triple = new ImmutableTriple(dataFactory.getStreetName(),10, dataFactory.getLastName());
+                cityStreets.add(triple);
+            }
+            existingAddresses.putIfAbsent(city,cityStreets);
+        }
 
-    @Test
-    public void simpleDelivery() {
-        //Arrange
-        InMemoryStorage deliveryTasksStorage = new InMemoryStorage();
+        ProductionStorage packagesStorage = new ProductionStorage();
         List<PackageInfo> packages = createPackageInfos();
         DeliveryTask deliveryTask = new DeliveryTask(){
             @Override
@@ -29,20 +35,15 @@ public class PostmanTest {
                 return packages;
             }
         };
-        DeliveryService deliveryService = new DeliveryService(deliveryTasksStorage, deliveryTask);
-
+        DeliveryService deliveryService = new DeliveryService(packagesStorage, deliveryTask);
+        FrameMap frameMap = new FrameMap(deliveryService, 4, 10);
+        frameMap.drawMap();
         //Act
         deliveryService.startWorkDay();
 
-        List<PackageInfo> packagesAfterUpdates = deliveryTask.getAllPackages();
-        for (PackageInfo packagesAfterUpdate : packagesAfterUpdates) {
-                    Assert.assertEquals("Delivered",packagesAfterUpdate.status);
-        }
-
-
     }
 
-    private List<PackageInfo> createPackageInfos() {
+    private static List<PackageInfo> createPackageInfos() {
         List<PackageInfo> packages = new ArrayList<>();
         List<Address> addresses = new ArrayList<>();
         addresses.add(new Address(City.London, "street1", 3));
@@ -58,8 +59,7 @@ public class PostmanTest {
         }
         return packages;
     }
-
-    private void addAddressToPackage(List<PackageInfo> packages, Address address) {
+    private static void addAddressToPackage(List<PackageInfo> packages, Address address) {
         packages.add(new PackageInfo(address, "Mr. "+ dataFactory.getLastName()));
     }
 }

@@ -3,16 +3,31 @@ package postman;
 import java.util.UUID;
 
 public class PackageInfo {
+    private UUID id;
     Address address;
     String name;
-    private UUID id;
-    String status;
+    DeliveryStatus status;
 
     public PackageInfo(Address address, String name) {
         this.address = address;
-        System.out.println(this.toString());
         this.name = name;
-        this.status = "New";
+        this.status = DeliveryStatus.New;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setStatus(DeliveryStatus status) {
+        this.status = status;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     @Override
@@ -21,22 +36,5 @@ public class PackageInfo {
                 "Address=" + address +
                 ", name='" + name + '\'' +
                 '}';
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setStatus(String status) {
-
-        this.status = status;
     }
 }

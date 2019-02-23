@@ -45,7 +45,6 @@ public class PostmanRout extends JPanel {
                     }
                 }
                 postmanLabel.setLocation(point);
-              //  clockLabel.setText(String.valueOf(secondsCounter++));
                 repaint();
             }
 

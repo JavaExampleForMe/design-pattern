@@ -1,15 +1,17 @@
 package postman.UI;
 
 import postman.Address;
-import postman.City;
+import postman.DeliveryService;
+import postman.Observer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
-public class FrameMap {
+public class FrameMap implements Observer {
     private final HashMap<Address, JButton> existingAddresses = new HashMap<>();
     private int numberStreets;
     private int numHousesInStreet;
@@ -17,22 +19,21 @@ public class FrameMap {
     private final JButton packageButton = new JButton();
     private final Color backgroundColor = new Color(242, 243, 244);
     private final JLabel clockLabel = new JLabel();
+    private Point prevPoint = new Point(0,0);
 
-    public FrameMap(int numberStreets, int numHousesInStreet) {
+    public FrameMap(DeliveryService observable, int numberStreets, int numHousesInStreet) {
         this.numberStreets = numberStreets;
         this.numHousesInStreet = numHousesInStreet;
-    }
 
-    public PostmanRout getPostmanRout() {
-        return postmanRout;
-    }
-
-    public JButton getPackageButton() {
-        return packageButton;
-    }
-
-    public JLabel getClockLabel() {
-        return clockLabel;
+        BiConsumer<String,Address> action = new BiConsumer<String,Address>() {
+            @Override
+            public void accept(String addressee, Address toAddress) {
+                Point toPoint = existingAddresses.get(toAddress).getLocationOnScreen();
+                packageButton.setText("<html>"+toAddress.display()+"<br>"+addressee+"</html>" );
+                prevPoint = postmanRout.sendPostman(prevPoint, toPoint, clockLabel);
+            }
+        };
+        observable.addObserver(this, action);
     }
 
     public HashMap<Address, JButton> drawMap(){

@@ -1,27 +1,21 @@
-package postman;
+package postman.decorator;
 
 import org.fluttercode.datafactory.impl.DataFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import postman.Address;
+import postman.DeliveryTask;
+import postman.PackageInfo;
+import postman.ProductionStorage;
 import postman.UI.City;
+import postman.UI.FrameMap;
 
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class PostmanTest {
-
-    private DataFactory dataFactory;
-
-    @Before
-    public void setUp()  {
-        dataFactory = new DataFactory();
-    }
-
-    @Test
-    public void simpleDelivery() {
-        //Arrange
-        InMemoryStorage deliveryTasksStorage = new InMemoryStorage();
+public class Main {
+    public static void main(String [ ] args) {
+        ProductionStorage packagesStorage = new ProductionStorage();
         List<PackageInfo> packages = createPackageInfos();
         DeliveryTask deliveryTask = new DeliveryTask(){
             @Override
@@ -29,20 +23,15 @@ public class PostmanTest {
                 return packages;
             }
         };
-        DeliveryService deliveryService = new DeliveryService(deliveryTasksStorage, deliveryTask);
-
+        postman.decorator.DeliveryService deliveryService = new postman.decorator.DeliveryService(packagesStorage, deliveryTask);
+        FrameMap frameMap = new FrameMap(deliveryService, 4, 10);
+        frameMap.drawMap();
         //Act
         deliveryService.startWorkDay();
 
-        List<PackageInfo> packagesAfterUpdates = deliveryTask.getAllPackages();
-        for (PackageInfo packagesAfterUpdate : packagesAfterUpdates) {
-                    Assert.assertEquals("Delivered",packagesAfterUpdate.status);
-        }
-
-
     }
 
-    private List<PackageInfo> createPackageInfos() {
+    private static List<PackageInfo> createPackageInfos() {
         List<PackageInfo> packages = new ArrayList<>();
         List<Address> addresses = new ArrayList<>();
         addresses.add(new Address(City.London, "street1", 3));
@@ -58,8 +47,8 @@ public class PostmanTest {
         }
         return packages;
     }
-
-    private void addAddressToPackage(List<PackageInfo> packages, Address address) {
+    private static void addAddressToPackage(List<PackageInfo> packages, Address address) {
+        DataFactory dataFactory = new DataFactory();
         packages.add(new PackageInfo(address, "Mr. "+ dataFactory.getLastName()));
     }
 }
