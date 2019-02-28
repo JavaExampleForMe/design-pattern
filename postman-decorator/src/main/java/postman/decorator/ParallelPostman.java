@@ -1,8 +1,8 @@
 package postman.decorator;
 
 import lombok.SneakyThrows;
-import postman.*;
-import postman.UI.City;
+import postman.logic.*;
+import postman.ui.City;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +43,7 @@ public class ParallelPostman implements Postman {
         List<DeliveryTask> result = new ArrayList<>();
         City[] cities = deliveryTask.getAllPackages().stream().map(PackageInfo::getAddress).map(Address::getCity).distinct().toArray(City[]::new);
         for (City currCity : cities) {
-            DeliveryTask deliveryPerCity = new DeliveryTask() {
-                    @Override
-                    public List<PackageInfo> getAllPackages() {
-                        return deliveryTask.getAllPackages().stream().filter(packageInfo -> packageInfo.getAddress().getCity()==currCity).collect(Collectors.toList());
-                    }
-                };
+            DeliveryTask deliveryPerCity = () -> deliveryTask.getAllPackages().stream().filter(packageInfo -> packageInfo.getAddress().getCity()==currCity).collect(Collectors.toList());
             result.add(deliveryPerCity);
         }
         return result;
@@ -68,26 +63,5 @@ public class ParallelPostman implements Postman {
     public void notifyObserver(String addressee, Address toAddress) {
         postman.notifyObserver(addressee, toAddress);
     }
-////    public int deliver1(DeliveryTask deliveryTask) {
-////        return IntStream.range(0,numOfThreads)
-////                .parallel()
-////                .map(i->{
-////                    try {
-////                        return deliveries.deliver(deliveryTask);
-////                    } catch (ExecutionException e) {
-////                        e.printStackTrace();
-////                    } catch (InterruptedException e) {
-////                        e.printStackTrace();
-////                    }
-////                    // if the task failed to start, then return a value that will not effect the max.
-////                    return -1;
-////                })
-////                .filter(result->result>0)
-////                .max()
-////                // you better return OptionalInt and not call the following function
-////                // because it maybe not your job to worry about what happen when there
-////                // are no successful tasks. leave the logic of "nothing to return" to the user.
-////                // ** if you know what to do then ignore this comment.
-////                .getAsInt();
-////    }
+
 }

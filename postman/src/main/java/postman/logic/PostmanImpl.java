@@ -1,7 +1,7 @@
-package postman;
+package postman.logic;
 
 import lombok.SneakyThrows;
-import postman.UI.City;
+import postman.ui.City;
 
 import java.util.HashMap;
 import java.util.Map;

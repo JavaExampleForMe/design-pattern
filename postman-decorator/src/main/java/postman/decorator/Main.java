@@ -1,16 +1,14 @@
 package postman.decorator;
 
 import org.fluttercode.datafactory.impl.DataFactory;
-import postman.Address;
-import postman.DeliveryTask;
-import postman.PackageInfo;
-import postman.ProductionStorage;
-import postman.UI.City;
-import postman.UI.FrameMap;
+import postman.logic.Address;
+import postman.logic.DeliveryTask;
+import postman.logic.PackageInfo;
+import postman.logic.ProductionStorage;
+import postman.ui.City;
+import postman.ui.FrameMap;
 
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Main {

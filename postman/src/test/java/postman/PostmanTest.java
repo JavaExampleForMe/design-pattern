@@ -4,7 +4,11 @@ import org.fluttercode.datafactory.impl.DataFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import postman.UI.City;
+import postman.logic.Address;
+import postman.logic.DeliveryService;
+import postman.logic.DeliveryTask;
+import postman.logic.PackageInfo;
+import postman.ui.City;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +40,7 @@ public class PostmanTest {
 
         List<PackageInfo> packagesAfterUpdates = deliveryTask.getAllPackages();
         for (PackageInfo packagesAfterUpdate : packagesAfterUpdates) {
-                    Assert.assertEquals("Delivered",packagesAfterUpdate.status);
+                    Assert.assertEquals("Delivered",packagesAfterUpdate.getStatus());
         }
 
 

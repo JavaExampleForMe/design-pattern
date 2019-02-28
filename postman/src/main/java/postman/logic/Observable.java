@@ -1,4 +1,4 @@
-package postman;
+package postman.logic;
 
 import java.util.function.BiConsumer;
 

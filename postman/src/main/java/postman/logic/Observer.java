@@ -1,4 +1,4 @@
-package postman;
+package postman.logic;
 
 public interface Observer {
 }

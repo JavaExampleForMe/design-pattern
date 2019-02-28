@@ -1,8 +1,8 @@
-package postman.UI;
+package postman.ui;
 
-import postman.Address;
-import postman.DeliveryService;
-import postman.Observer;
+import postman.logic.Address;
+import postman.logic.DeliveryService;
+import postman.logic.Observer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,15 +25,12 @@ public class FrameMap implements Observer {
         this.numberStreets = numberStreets;
         this.numHousesInStreet = numHousesInStreet;
 
-        BiConsumer<String,Address> action = new BiConsumer<String,Address>() {
-            @Override
-            public void accept(String addressee, Address toAddress) {
-                Point toPoint = existingAddresses.get(toAddress).getLocationOnScreen();
-                packageButton.setText("<html>"+toAddress.display()+"<br>"+addressee+"</html>" );
-                prevPoint = postmanRout.sendPostman(prevPoint, toPoint, clockLabel);
-            }
+        BiConsumer<String,Address> action = (addressee, toAddress) -> {
+            Point toPoint = existingAddresses.get(toAddress).getLocationOnScreen();
+            packageButton.setText("<html>"+toAddress.display()+"<br>"+addressee+"</html>" );
+            prevPoint = postmanRout.sendPostman(prevPoint, toPoint, clockLabel);
         };
-        observable.addObserver(this, action);
+        observable.registerForPostmanRoute(this, action);
     }
 
     public HashMap<Address, JButton> drawMap(){

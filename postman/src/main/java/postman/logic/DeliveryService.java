@@ -1,8 +1,8 @@
-package postman;
+package postman.logic;
 
 import java.util.function.BiConsumer;
 
-public class DeliveryService implements Observable{
+public class DeliveryService{
 
     protected final PackagesStorage packagesStorage;
     private PostmanImpl postman;
@@ -19,18 +19,8 @@ public class DeliveryService implements Observable{
         postman.deliver(deliveryTask);
     }
 
-    @Override
-    public void addObserver(Observer observer, BiConsumer<String, Address> consumer) {
+    public void registerForPostmanRoute(Observer observer, BiConsumer<String, Address> consumer) {
         postman.addObserver(observer, consumer);
     }
 
-    @Override
-    public void removeObserver(Observer observer) {
-        postman.removeObserver(observer);
-    }
-
-    @Override
-    public void notifyObserver(String fromAddress, Address toAddress) {
-        postman.notifyObserver(fromAddress, toAddress);
-    }
 }
