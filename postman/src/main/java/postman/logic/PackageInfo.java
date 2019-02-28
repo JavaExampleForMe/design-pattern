@@ -1,4 +1,4 @@
-package postman;
+package postman.logic;
 
 import java.util.UUID;
 
@@ -20,6 +20,10 @@ public class PackageInfo {
 
     public void setStatus(DeliveryStatus status) {
         this.status = status;
+    }
+
+    public DeliveryStatus getStatus() {
+        return status;
     }
 
     public Address getAddress() {

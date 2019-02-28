@@ -1,5 +1,9 @@
 package postman;
 
+import postman.logic.DeliveryStatus;
+import postman.logic.PackageInfo;
+import postman.logic.PackagesStorage;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

@@ -1,10 +1,10 @@
 package postman.decorator;
 
-import postman.*;
+import postman.logic.*;
 
 import java.util.function.BiConsumer;
 
-public class DeliveryService extends postman.DeliveryService {
+public class DeliveryService extends postman.logic.DeliveryService {
 
     private Postman postman;
 
@@ -21,17 +21,8 @@ public class DeliveryService extends postman.DeliveryService {
     }
 
     @Override
-    public void addObserver(Observer observer, BiConsumer<String, Address> consumer) {
+    public void registerForPostmanRoute(Observer observer, BiConsumer<String, Address> consumer) {
         postman.addObserver(observer, consumer);
     }
 
-    @Override
-    public void removeObserver(Observer observer) {
-        postman.removeObserver(observer);
-    }
-
-    @Override
-    public void notifyObserver(String fromAddress, Address toAddress) {
-        postman.notifyObserver(fromAddress, toAddress);
-    }
 }

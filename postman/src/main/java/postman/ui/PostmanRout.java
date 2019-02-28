@@ -1,4 +1,4 @@
-package postman.UI;
+package postman.ui;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,9 +1,8 @@
-package postman;
+package postman.logic;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import postman.UI.City;
+import postman.ui.City;
 
 import java.util.Objects;
 

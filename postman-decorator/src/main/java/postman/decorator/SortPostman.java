@@ -1,6 +1,6 @@
 package postman.decorator;
 
-import postman.*;
+import postman.logic.*;
 
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +34,7 @@ public class SortPostman implements Postman {
     }
 
     @Override
-    public void addObserver(Observer observer, BiConsumer<String,Address> consumer) {
+    public void addObserver(Observer observer, BiConsumer<String, Address> consumer) {
         postman.addObserver(observer, consumer);
     }
 

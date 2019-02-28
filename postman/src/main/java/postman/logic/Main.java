@@ -1,11 +1,10 @@
-package postman;
+package postman.logic;
 
-import javafx.util.Pair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.fluttercode.datafactory.impl.DataFactory;
-import postman.UI.City;
-import postman.UI.FrameMap;
+import postman.ui.City;
+import postman.ui.FrameMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
