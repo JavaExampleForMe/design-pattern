@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class FrameMap implements Observer {
     private final HashMap<Address, JButton> existingAddresses = new HashMap<>();
@@ -25,9 +25,9 @@ public class FrameMap implements Observer {
         this.numberStreets = numberStreets;
         this.numHousesInStreet = numHousesInStreet;
 
-        BiConsumer<String,Address> action = (addressee, toAddress) -> {
-            Point toPoint = existingAddresses.get(toAddress).getLocationOnScreen();
-            packageButton.setText("<html>"+toAddress.display()+"<br>"+addressee+"</html>" );
+        Consumer<DestinationPackage> action = (destinationPackage) -> {
+            Point toPoint = existingAddresses.get(destinationPackage.toAddress).getLocationOnScreen();
+            packageButton.setText("<html>"+destinationPackage.toAddress.display()+"<br>"+destinationPackage.addressee+"</html>" );
             prevPoint = postmanRout.sendPostman(prevPoint, toPoint, clockLabel);
         };
         observable.registerForPostmanRoute(this, action);

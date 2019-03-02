@@ -4,9 +4,9 @@ import java.awt.*;
 
 public enum City {
     NY("ny", BorderLayout.WEST),
-    London("london", BorderLayout.NORTH),
     Rome("rome", BorderLayout.EAST),
-    Paris("paris", BorderLayout.SOUTH)
+    Paris("paris", BorderLayout.SOUTH),
+    London("london", BorderLayout.NORTH)
     ;
 
 

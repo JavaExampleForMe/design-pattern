@@ -1,10 +1,12 @@
 package postman.logic;
 
-import java.util.function.BiConsumer;
+import postman.ui.DestinationPackage;
+
+import java.util.function.Consumer;
 
 public interface Observable {
-    void addObserver(Observer observer, BiConsumer<String,Address> consumer);
+    void addObserver(Observer observer, Consumer<DestinationPackage> consumer);
     void removeObserver(Observer observer);
-    void notifyObserver(String fromAddress, Address toAddress);
+    void notifyObserver(DestinationPackage destinationPackage);
 
 }

@@ -2,16 +2,17 @@ package postman.logic;
 
 import lombok.SneakyThrows;
 import postman.ui.City;
+import postman.ui.DestinationPackage;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class PostmanImpl implements Postman {
 
     private PackagesStorage packagesStorage;
     private Address currentAddress =  new Address(City.Rome, "", 0);;
-    private Map<Observer, BiConsumer<String,Address>> observers = new HashMap<>();
+    private Map<Observer, Consumer<DestinationPackage>> observers = new HashMap<>();
 
     public PostmanImpl(PackagesStorage packagesStorage) {
         this.packagesStorage = packagesStorage;
@@ -24,7 +25,7 @@ public class PostmanImpl implements Postman {
         for (PackageInfo currPackage : deliveryTask.getAllPackages()) {
             int  millis = calcRoutTime(currPackage.address);
             Thread.sleep(millis);
-            notifyObserver(currPackage.name, currPackage.address);
+            notifyObserver(new DestinationPackage(currPackage.name, currPackage.address));
             currentAddress = currPackage.address;
             System.out.println(Thread.currentThread().getName() + ": delivered "+ currPackage + " total time " + totalTime);
             packagesStorage.markPackageAsDelivered(currPackage);
@@ -56,7 +57,7 @@ public class PostmanImpl implements Postman {
     }
 
     @Override
-    public void addObserver(Observer observer, BiConsumer<String,Address> consumer) {
+    public void addObserver(Observer observer, Consumer<DestinationPackage> consumer) {
         observers.putIfAbsent(observer, consumer);
     }
 
@@ -66,9 +67,9 @@ public class PostmanImpl implements Postman {
     }
 
     @Override
-    public void notifyObserver(String addressee, Address toAddress) {
-        for (BiConsumer<String,Address> observer : observers.values()) {
-            observer.accept(addressee, toAddress);
+    public void notifyObserver(DestinationPackage destinationPackage) {
+        for (Consumer<DestinationPackage> observer : observers.values()) {
+            observer.accept(destinationPackage);
         }
 
     }

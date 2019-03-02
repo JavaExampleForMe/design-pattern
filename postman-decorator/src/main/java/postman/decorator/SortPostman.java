@@ -1,10 +1,14 @@
 package postman.decorator;
 
-import postman.logic.*;
+import postman.logic.DeliveryTask;
+import postman.logic.Observer;
+import postman.logic.PackageInfo;
+import postman.logic.Postman;
+import postman.ui.DestinationPackage;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class SortPostman implements Postman {
@@ -34,7 +38,7 @@ public class SortPostman implements Postman {
     }
 
     @Override
-    public void addObserver(Observer observer, BiConsumer<String, Address> consumer) {
+    public void addObserver(Observer observer, Consumer<DestinationPackage> consumer) {
         postman.addObserver(observer, consumer);
     }
 
@@ -44,7 +48,7 @@ public class SortPostman implements Postman {
     }
 
     @Override
-    public void notifyObserver(String addressee, Address toAddress) {
-        postman.notifyObserver(addressee, toAddress);
+    public void notifyObserver(DestinationPackage destinationPackage) {
+        postman.notifyObserver(destinationPackage);
     }
 }

@@ -3,11 +3,12 @@ package postman.decorator;
 import lombok.SneakyThrows;
 import postman.logic.*;
 import postman.ui.City;
+import postman.ui.DestinationPackage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class ParallelPostman implements Postman {
@@ -16,7 +17,8 @@ public class ParallelPostman implements Postman {
     private ExecutorService executor;
 
     public ParallelPostman(Postman postman) {
-        executor = Executors.newFixedThreadPool(City.values().length);
+       // executor = Executors.newWorkStealingPool(3);//newFixedThreadPool(City.values().length);
+        executor = Executors.newFixedThreadPool(3);//newFixedThreadPool(City.values().length);
         this.postman = postman;
     }
 
@@ -24,14 +26,14 @@ public class ParallelPostman implements Postman {
     @SneakyThrows
     public int deliver(DeliveryTask deliveryTask) {
         List<DeliveryTask> bulks = toBulks(deliveryTask);
-        List<Future<Integer>> tasks = new ArrayList<>();
+        List<Callable<Integer>> tasks = new ArrayList<>();
         for (DeliveryTask bulkDeliveryTask : bulks) {
             Callable<Integer> task = () -> postman.deliver(bulkDeliveryTask);
-            tasks.add(executor.submit(task));
+            tasks.add(task);
         }
-
+        List<Future<Integer>> futures = executor.invokeAll(tasks);
         int totalTime = 0;
-        for (Future<Integer> task : tasks) {
+        for (Future<Integer> task : futures) {
             final int currDuration = task.get();
             totalTime = Math.max(currDuration, totalTime);
         }
@@ -41,16 +43,23 @@ public class ParallelPostman implements Postman {
 
     private List<DeliveryTask> toBulks(DeliveryTask deliveryTask) {
         List<DeliveryTask> result = new ArrayList<>();
-        City[] cities = deliveryTask.getAllPackages().stream().map(PackageInfo::getAddress).map(Address::getCity).distinct().toArray(City[]::new);
+      City[] cities = deliveryTask.getAllPackages().stream()
+              .map(PackageInfo::getAddress)
+              .map(Address::getCity)
+              .distinct()
+              .sorted((i1, i2) -> ((Integer)i1.ordinal()).compareTo(i2.ordinal()))
+              .toArray(City[]::new);
         for (City currCity : cities) {
-            DeliveryTask deliveryPerCity = () -> deliveryTask.getAllPackages().stream().filter(packageInfo -> packageInfo.getAddress().getCity()==currCity).collect(Collectors.toList());
-            result.add(deliveryPerCity);
+            DeliveryTask deliveryPerCity = () -> deliveryTask.getAllPackages().stream()
+                    .filter(packageInfo -> packageInfo.getAddress().getCity()==currCity)
+                    .collect(Collectors.toList());
+               result.add(deliveryPerCity);
         }
         return result;
     }
 
     @Override
-    public void addObserver(Observer observer, BiConsumer<String,Address> consumer) {
+    public void addObserver(Observer observer, Consumer<DestinationPackage> consumer) {
         postman.addObserver(observer, consumer);
     }
 
@@ -60,8 +69,8 @@ public class ParallelPostman implements Postman {
     }
 
     @Override
-    public void notifyObserver(String addressee, Address toAddress) {
-        postman.notifyObserver(addressee, toAddress);
+    public void notifyObserver(DestinationPackage destinationPackage) {
+        postman.notifyObserver(destinationPackage);
     }
 
 }
