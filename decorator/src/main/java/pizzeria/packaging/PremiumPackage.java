@@ -17,6 +17,6 @@ public class PremiumPackage implements PackagePizza {
 
     @Override
     public double getPrice() {
-        return pizza.getPrice() + 0;
+        return pizza.calcPrice() + 0;
     }
 }

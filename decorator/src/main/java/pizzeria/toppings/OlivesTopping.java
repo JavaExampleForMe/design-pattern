@@ -4,17 +4,20 @@ import pizzeria.Pizza;
 
 public class OlivesTopping extends ToppingDecorator {
 
-    public OlivesTopping(Pizza pizza) {
+    private ToppingCoverage toppingCoverage;
+
+    public OlivesTopping(Pizza pizza, ToppingCoverage toppingCoverage) {
         super(pizza);
+        this.toppingCoverage = toppingCoverage;
     }
 
     @Override
-    public String bakePizza() {
-        return super.bakePizza() + "Olives";
+    public String bake() {
+        return super.bake() + "Olives";
     }
 
     @Override
-    public double getPrice() {
-        return pizza.getPrice() + 2;
+    public double calcPrice() {
+        return pizza.calcPrice() + 2 * toppingCoverage.getPart();
     }
 }

@@ -8,11 +8,11 @@ public abstract class ToppingDecorator implements Pizza {
         this.pizza = newPizza;
     }
 
-    public String bakePizza() {
-        return this.pizza.bakePizza() + " with ";
+    public String bake() {
+        return this.pizza.bake() + " with ";
     }
 
-    public double getPrice() {
-        return this.pizza.getPrice();
+    public double calcPrice() {
+        return this.pizza.calcPrice();
     }
 }

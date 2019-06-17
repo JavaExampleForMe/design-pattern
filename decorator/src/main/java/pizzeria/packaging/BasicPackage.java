@@ -1,7 +1,6 @@
 package pizzeria.packaging;
 
 import pizzeria.Pizza;
-import pizzeria.toppings.ToppingDecorator;
 
 public class BasicPackage implements PackagePizza {
 
@@ -19,6 +18,6 @@ public class BasicPackage implements PackagePizza {
 
     @Override
     public double getPrice() {
-        return pizza.getPrice() + 1;
+        return pizza.calcPrice() + 1;
     }
 }

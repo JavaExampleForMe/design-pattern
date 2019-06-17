@@ -1,6 +1,6 @@
 package pizzeria;
 
 public interface Pizza {
-    String bakePizza();
-    double getPrice();
+    String bake();
+    double calcPrice();
 }

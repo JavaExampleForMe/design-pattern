@@ -2,22 +2,22 @@ package pizzeria.toppings;
 
 import pizzeria.Pizza;
 
-public class MushroomsTopping extends ToppingDecorator {
+public class PeppersTopping extends ToppingDecorator {
 
     private ToppingCoverage toppingCoverage;
 
-    public MushroomsTopping(Pizza pizza, ToppingCoverage toppingCoverage) {
+    public PeppersTopping(Pizza pizza, ToppingCoverage toppingCoverage) {
         super(pizza);
         this.toppingCoverage = toppingCoverage;
     }
 
     @Override
     public String bake() {
-        return super.bake() + "Mushrooms";
+        return super.bake() + "Peppers";
     }
 
     @Override
     public double calcPrice() {
-        return pizza.calcPrice() + 3 * toppingCoverage.getPart();
+        return pizza.calcPrice() + 2 * toppingCoverage.getPart();
     }
 }
